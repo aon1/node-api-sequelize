@@ -3,6 +3,7 @@
 boilerplate api with sequelize (mysql), jsonwebtoken and joi validation
 
 ### Installation
+
     npm install
 
 ### Steps to create an endpoint
@@ -11,14 +12,14 @@ boilerplate api with sequelize (mysql), jsonwebtoken and joi validation
 
 #### Create a file with the name of your new endpoint on the following folders
 
- - create model file on app/models/foo
- - create router file on app/router/foo
- - create controller file on app/controllers/foo
- - create validation file on app/validators/foo
+- create model file on app/models/foo
+- create router file on app/router/foo
+- create controller file on app/controllers/foo
+- create validation file on app/validators/foo
 
 #### Generate migration file(s)
- 
-``` 
+
+```
 node_modules/.bin/sequelize migration:create --name=create-<model name>
 ```
 
@@ -39,8 +40,9 @@ router.use('/foo', foo);
 ```
 
 #### Run project
+
 ```
-npm start
+docker-compose up
 ```
 
 Route will be available on http://localhost:3000/api/foo
