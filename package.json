@@ -1,10 +1,11 @@
 {
   "name": "node-api-sequelize",
   "version": "1.0.0",
-  "description": "",
+  "description": "node api boilerplate dockerized with mysql, jsonwebtoken and joi validation",
   "main": "index.js",
   "scripts": {
     "start": "nodemon node index.js",
+    "dev": "./node_modules/.bin/sequelize db:migrate && nodemon node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/eslint --fix app/**/*.js",
     "migrate": "./node_modules/.bin/sequelize db:migrate"
@@ -15,7 +16,7 @@
     }
   },
   "keywords": [],
-  "author": "",
+  "author": "Arlen Nascimento",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
