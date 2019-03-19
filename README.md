@@ -2,10 +2,6 @@
 
 boilerplate api with sequelize (mysql), jsonwebtoken and joi validation
 
-### Installation
-
-    npm install
-
 ### Steps to create an endpoint
 
 #### Configure database connect on config/database.js
