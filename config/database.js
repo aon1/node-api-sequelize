@@ -1,7 +1,7 @@
 module.exports = {
-  username: "root",
-  password: "root",
-  database: "crud_sequelize",
-  host: "mysql",
-  dialect: "mysql"
-};
+  username: 'root',
+  password: 'strong_password',
+  database: 'crud_sequelize',
+  host: 'localhost',
+  dialect: 'mysql'
+}

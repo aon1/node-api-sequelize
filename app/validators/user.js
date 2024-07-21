@@ -2,21 +2,19 @@ const Joi = require('joi')
 
 module.exports = {
   index: {},
-  create: {
-    body: {
-      name: Joi.string()
-        .trim()
-        .required(),
-      email: Joi.string()
-        .trim()
-        .email({ minDomainAtoms: 2 })
-        .required(),
-      password: Joi.string()
-        .trim()
-        .required()
-    }
-  },
-  update: {
+  create: Joi.object({
+    name: Joi.string()
+      .trim()
+      .required(),
+    email: Joi.string()
+      .trim()
+      .email()
+      .required(),
+    password: Joi.string()
+      .trim()
+      .required()
+  }),
+  update: Joi.object({
     path: {
       userId: Joi.number()
         .integer()
@@ -26,15 +24,15 @@ module.exports = {
       name: Joi.string().trim(),
       email: Joi.string()
         .trim()
-        .email({ minDomainAtoms: 2 }),
+        .email(),
       password: Joi.string().trim()
     }
-  },
-  delete: {
+  }),
+  delete: Joi.object({
     params: {
       userId: Joi.string()
         .trim()
         .required()
     }
-  }
+  })
 }

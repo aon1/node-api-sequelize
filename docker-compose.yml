@@ -1,4 +1,4 @@
-version: "2"
+version: "3.3"
 
 services:
   node-api-sequelize:
@@ -15,9 +15,9 @@ services:
       - mysql
     depends_on:
       - mysql
-    networks:
-      - default
-      - logapi_default
+#    networks:
+#      - default
+#      - logapi_default
   mysql:
     image: mysql:latest
     command: --default-authentication-plugin=mysql_native_password
@@ -27,14 +27,14 @@ services:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: "crud_sequelize"
-      MYSQL_USER: "root"
-      MYSQL_PASSWORD: "root"
+      MYSQL_USER: "crud"
+      MYSQL_PASSWORD: "crud"
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_ROOT_HOST: "mysql"
 
 volumes:
   mysqldata:
 
-networks:
-  logapi_default:
-    external: true
+#networks:
+#  logapi_default:
+#    external: true

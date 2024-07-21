@@ -1,24 +1,27 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+const express = require('express')
+const logger = require('./logger')
 
-const app = express();
+const app = express()
+const rTracer = require('cls-rtracer')
 
-const router = require("./app/router/");
+app.use(rTracer.expressMiddleware())
 
-app.use(bodyParser.urlencoded({ extended: false }));
+const router = require('./app/router/')
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use(express.json())
 
-app.use("/api", router);
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
-app.use(function(err, req, res, next) {
+app.use('/api', router)
+
+app.use(function (err, req, res, next) {
   if (err.isBoom) {
-    return res.status(err.output.statusCode).json(err.output.payload);
+    return res.status(err.output.statusCode).json(err.output.payload)
   }
-});
+})
 
 app.listen(3000, () => {
-  console.log("Node server listening on port 3000");
-});
+  logger.info('Node server listening on port 3000')
+})
