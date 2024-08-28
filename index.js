@@ -1,27 +1,28 @@
-const express = require('express')
-const logger = require('./logger')
+const express = require('express');
+const rTracer = require('cls-rtracer');
 
-const app = express()
-const rTracer = require('cls-rtracer')
+const logger = require('./logger');
 
-app.use(rTracer.expressMiddleware())
+const app = express();
 
-const router = require('./app/router/')
+app.use(rTracer.expressMiddleware());
 
-app.use(express.json())
+const router = require('./app/router/');
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+  res.send('Hello World!');
+});
 
-app.use('/api', router)
+app.use('/api', router);
 
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   if (err.isBoom) {
-    return res.status(err.output.statusCode).json(err.output.payload)
+    return res.status(err.output.statusCode).json(err.output.payload);
   }
-})
+});
 
 app.listen(3000, () => {
-  logger.info('Node server listening on port 3000')
-})
+  logger.info('Node server listening on port 3000');
+});

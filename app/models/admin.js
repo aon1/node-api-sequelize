@@ -1,8 +1,8 @@
 const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    'User',
+  const Admin = sequelize.define(
+    'Admin',
     {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
@@ -10,27 +10,27 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       hooks: {
-        beforeCreate: (user) => {
-          user.password = user.hashPassword(user.password);
+        beforeCreate: (admin) => {
+          admin.password = admin.hashPassword(admin.password);
         },
-        beforeUpdate: (user) => {
-          user.password = user.hashPassword(user.password);
+        beforeUpdate: (admin) => {
+          admin.password = admin.hashPassword(admin.password);
         },
       },
       freezeTableName: true,
-      tableName: 'user',
+      tableName: 'admin',
     },
   );
 
-  User.prototype.validatePassword = (password, hash) => {
+  Admin.prototype.validatePassword = (password, hash) => {
     return bcrypt.compareSync(password, hash);
   };
 
-  User.prototype.hashPassword = (password) => {
+  Admin.prototype.hashPassword = (password) => {
     const salt = bcrypt.genSaltSync();
 
     return bcrypt.hashSync(password, salt);
   };
 
-  return User;
+  return Admin;
 };

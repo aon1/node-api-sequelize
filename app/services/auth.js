@@ -1,19 +1,24 @@
-var jwt = require('jsonwebtoken')
-var config = require('../../config/config')
+const jwt = require('jsonwebtoken');
+const config = require('../../config/config');
 
-module.exports = {
-  authenticate (req, res, next) {
-    jwt.verify(req.headers['token'], config.auth.secretKey, function (
+exports.authenticate = (req, res, next) => {
+  const authorizationHeader = req.get('Authorization');
+  if (authorizationHeader && authorizationHeader.startsWith('Bearer')) {
+    const jwtToken = authorizationHeader.split(' ')[1];
+
+    jwt.verify(jwtToken, config.auth.secretKey, (
       err,
-      decoded
-    ) {
+      decoded,
+    ) => {
       if (err) {
-        res.json({ status: 'error', message: err.message, data: null })
+        res.json({ status: 'error', message: err.message, data: null });
       } else {
-        // add user id to request
-        // req.body.userId = decoded.id;
-        next()
+        req.user = {
+          id: decoded.id,
+          group: decoded.group,
+        };
+        next();
       }
-    })
+    });
   }
-}
+};
