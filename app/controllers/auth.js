@@ -1,29 +1,26 @@
-const jwt = require('jsonwebtoken')
-const config = require('../../config/config')
+const jwt = require('jsonwebtoken');
+const config = require('../../config/config');
 
-const { User } = require('../models')
+const { User } = require('../models');
 
-module.exports = {
-  login (req, res, next) {
-    return User.findOne({ where: { email: req.body.email } }).then(userInfo => {
-      if (userInfo) {
-        if (userInfo.validPassword(req.body.password)) {
-          const token = jwt.sign({ id: userInfo.id }, config.auth.secretKey, {
-            expiresIn: '24h'
-          })
-          res.json({
-            status: 'success',
-            message: 'user found!!!',
-            data: { user: userInfo, token: token }
-          })
-        } else {
-          res.json({
-            status: 'error',
-            message: 'Invalid email/password!!!',
-            data: null
-          })
-        }
-      }
-    })
+exports.login = async (req, res) => {
+  const user = await User.findOne({ where: { email: req.body.email } });
+  if (user) {
+    if (user.validatePassword(req.body.password, user.password)) {
+      const token = jwt.sign({
+        id: user.id,
+        group: 'user',
+      },
+      config.auth.secretKey, {
+        expiresIn: '240h',
+      });
+
+      res.json({ token });
+    } else {
+      res.json({
+        status: 'error',
+        message: 'Invalid email/password',
+      });
+    }
   }
-}
+};

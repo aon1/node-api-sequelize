@@ -1,28 +1,26 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("brand", {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.DataTypes.INTEGER
-      },
-      name: {
-        allowNull: false,
-        type: Sequelize.DataTypes.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DataTypes.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DataTypes.DATE
-      }
-    });
-  },
+  up: (queryInterface, Sequelize) => queryInterface.createTable('brand', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.DataTypes.INTEGER,
+    },
+    name: {
+      allowNull: false,
+      type: Sequelize.DataTypes.STRING,
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DataTypes.DATE,
+      defaultValue: Sequelize.fn('now'),
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DataTypes.DATE,
+      defaultValue: Sequelize.fn('now'),
+    },
+  }),
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("brand");
-  }
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('brand'),
 };

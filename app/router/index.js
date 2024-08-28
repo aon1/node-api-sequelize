@@ -1,14 +1,18 @@
-const express = require('express')
-const router = express.Router()
-const services = require('../services/auth')
+const express = require('express');
 
-const user = require('./user')
-const brand = require('./brand')
-const auth = require('./auth')
+const router = express.Router();
+const services = require('../services/auth');
 
-router.use('/login', auth)
-router.use('/signup', user)
-router.use('/users', services.authenticate, user)
-router.use('/brands', services.authenticate, brand)
+const user = require('./user');
+const brand = require('./brand');
+const auth = require('./auth');
+const admin = require('./admin');
 
-module.exports = router
+router.use('/login', auth);
+router.use('/signup', user);
+router.use('/admin', admin);
+// router.use('/users', services.authenticate, user)
+router.use('/users', user);
+router.use('/brands', services.authenticate, brand);
+
+module.exports = router;

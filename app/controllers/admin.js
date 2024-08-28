@@ -1,20 +1,46 @@
-const { User } = require('../models');
+const jwt = require('jsonwebtoken');
+const { Admin } = require('../models');
 const logger = require('../../logger');
-const { AccessControl } = require('accesscontrol');
+const config = require('../../config/config');
 
-exports.index = (req, res) => User.findAll()
-  .then((users) => {
-    res.status(200).json(users);
-  })
-  .catch((error) => {
+exports.index = (req, res) => {
+  try {
+    const admins = Admin.findAll();
+    if (admins) {
+      res.status(200).json(admins);
+    }
+  } catch (error) {
     res.status(500).json({ status: 500, message: error });
-  });
+  }
+};
+
+exports.login = async (req, res) => {
+  const admin = await Admin.findOne({ where: { email: req.body.email } });
+  if (admin) {
+    if (admin.validatePassword(req.body.password, admin.password)) {
+      const token = jwt.sign({
+        id: admin.id,
+        group: 'admin',
+      },
+      config.auth.secretKey, {
+        expiresIn: '240h',
+      });
+
+      res.json({ token });
+    } else {
+      res.json({
+        status: 'error',
+        message: 'Invalid email/password',
+      });
+    }
+  }
+};
 
 exports.create = (req, res) => {
   // const ac = new AccessControl(grants);
   const data = req.body;
 
-  return User.create(data)
+  return Admin.create(data)
     .then((user) => {
       res.status(200).json({
         status: 200,
@@ -30,9 +56,9 @@ exports.create = (req, res) => {
 
 exports.update = (req, res) => {
   const data = req.body;
-  const { userId } = req.params;
+  const { id } = req.params;
 
-  return User.update(data, { where: { id: userId }, individualHooks: true })
+  return Admin.update(data, { where: { id }, individualHooks: true })
     .then((result) => {
       res.status(200).json({ status: 200, message: 'User updated' });
     })
@@ -45,9 +71,9 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  const { userId } = req.params;
+  const { id } = req.params;
 
-  return User.destroy({ where: { id: userId } })
+  return Admin.destroy({ where: { id } })
     .then((affectedRows) => {
       if (affectedRows === 0) {
         return res

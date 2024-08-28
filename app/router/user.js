@@ -1,19 +1,16 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
-const expressJoi = require("express-validation");
 
-const userController = require("../controllers/user");
-const userValidator = require("../validators/user");
+const userValidator = require('../validators/user');
+const { validate } = require('../validators');
 
-// create user
-router.post("/", expressJoi(userValidator.create), userController.create);
+const userController = require('../controllers/user');
 
-router.get("/", userController.index);
-router.put("/:userId", expressJoi(userValidator.update), userController.update);
-router.delete(
-  "/:userId",
-  expressJoi(userValidator.delete),
-  userController.delete
-);
+router.post('/', validate(userValidator.create), userController.create);
+
+router.get('/', userController.index);
+router.put('/:userId', userController.update);
+router.delete('/:userId', userController.delete);
 
 module.exports = router;
